@@ -13,7 +13,7 @@
       set_fact:
         pgrole: 'rclone_mount'
 
-    - name: 'Setting Volumes influxdb'
+    - name: 'Setting Volumes rclone mount'
       set_fact:
         rclone_mount_volumes:
           - "/mnt/rclone:/mnt/rclone:shared"
@@ -21,13 +21,13 @@
           - "/etc/passwd:/etc/passwd:ro"
           - "/etc/group:/etc/group:ro"
 
-    - name: 'Deploying influxdb'
+    - name: 'Deploying rclone_mount'
       docker_container:
         name: 'rclone_mount'
         image: 'rclone/rclone'
         pull: yes
-        user: "{{ user.name }}:{{ user.groupid }}"
-        device:
+        user: "{{ user.userid }}:{{ user.groupid }}"
+        devices:
           - /dev/fuse
         capabilities:
           - SYS_ADMIN
