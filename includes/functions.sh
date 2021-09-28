@@ -7,7 +7,7 @@ function logo() {
   color2='\033[1;35m' # light purple
   color3='\033[0;33m' # light yellow
   nocolor='\033[0m'   # no color
-  companyname='\033[1;34mSSD - V2.0\033[0m'
+  companyname='\033[1;34mSSD - V2.1\033[0m'
   divisionname='\033[1;32mlaster13 - Merrick\033[0m'
   descriptif='\033[1;31mHeimdall - Syncthing - sonerezh - Portainer - Nextcloud - Lidarr\033[0m'
   appli='\033[0;36mPlex - Sonarr - Medusa - Rutorrent - Radarr - Jackett - Pyload - Traefik\033[0m'

@@ -1,4 +1,3 @@
-
 ---
 - hosts: localhost
   gather_facts: false
@@ -17,7 +16,7 @@
     - name: 'Setting Volumes influxdb'
       set_fact:
         rclone_mount_volumes:
-          - "/mnt/rclone:/mnt/rclone"
+          - "/mnt/rclone:/mnt/rclone:shared"
           - "/home/{{ lookup('env','USER') }}/.config/rclone:/config/rclone"
           - "/etc/passwd:/etc/passwd:ro"
           - "/etc/group:/etc/group:ro"
@@ -29,11 +28,11 @@
         pull: yes
         user: "{{ user.name }}:{{ user.groupid }}"
         device:
-        - /dev/fuse
+          - /dev/fuse
         capabilities:
-        - SYS_ADMIN
+          - SYS_ADMIN
         security_opts:
-        - apparmor:unconfined
+          - apparmor:unconfined
         volumes: "{{rclone_mount_volumes}}"
         restart_policy: unless-stopped
         state: started
