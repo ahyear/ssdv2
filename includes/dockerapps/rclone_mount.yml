@@ -1,0 +1,44 @@
+
+---
+- hosts: localhost
+  gather_facts: false
+  vars_files:
+    - /opt/seedbox/variables/account.yml
+  tasks:
+    # FACTS #######################################################################
+    - name: create rtorrentvpn state
+      shell: |
+        echo "1" > /opt/seedbox/status/rclone_mount
+
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'rclone_mount'
+
+    - name: 'Setting Volumes influxdb'
+      set_fact:
+        rclone_mount_volumes:
+          - "/mnt/rclone:/mnt/rclone"
+          - "/home/{{ lookup('env','USER') }}/.config/rclone:/config/rclone"
+          - "/etc/passwd:/etc/passwd:ro"
+          - "/etc/group:/etc/group:ro"
+
+    - name: 'Deploying influxdb'
+      docker_container:
+        name: 'rclone_mount'
+        image: 'rclone/rclone'
+        pull: yes
+        user: "{{ user.name }}:{{ user.groupid }}"
+        device:
+        - /dev/fuse
+        capabilities:
+        - SYS_ADMIN
+        security_opts:
+        - apparmor:unconfined
+        volumes: "{{rclone_mount_volumes}}"
+        restart_policy: unless-stopped
+        state: started
+        command: "mount {{ rclone.remote }}: /mnt/rclone"
+
+
+
+
