@@ -38,6 +38,21 @@
         state: started
         command: "mount {{ rclone.remote }}: /mnt/rclone"
 
-
+    - name: 'Deploying rclone_union'
+      docker_container:
+        name: 'rclone_mount'
+        image: 'rclone/rclone'
+        pull: yes
+        user: "{{ user.userid }}:{{ user.groupid }}"
+        devices:
+          - /dev/fuse
+        capabilities:
+          - SYS_ADMIN
+        security_opts:
+          - apparmor:unconfined
+        volumes: "{{rclone_mount_volumes}}"
+        restart_policy: unless-stopped
+        state: started
+        command: "mount {{ rclone.remote }}: /mnt/rclone"
 
 
